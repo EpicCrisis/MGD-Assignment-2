@@ -91,8 +91,9 @@ public class RTSControllerScript : MonoBehaviour
 
 					//Debug.Log ("Create Marker");
 					//Debug.DrawLine (ray.origin, hit.point);
+
 					pointer.position = new Vector3 (hit.point.x, hit.point.y + 0.1f, hit.point.z);
-					pointer.rotation = Quaternion.Euler (90f, hit.transform.rotation.y, hit.transform.rotation.z);
+					pointer.rotation = Quaternion.FromToRotation (pointer.forward, hit.normal) * pointer.rotation;
 				}
 			}
 		}
