@@ -18,6 +18,8 @@ public class RTSControllerScript : MonoBehaviour
 
 	public Transform pointer;
 
+	//public List<ObjectMoveScript> objectScript = new List<ObjectMoveScript> ();
+
 	void Start ()
 	{
 		
@@ -48,20 +50,22 @@ public class RTSControllerScript : MonoBehaviour
 
 			GameObject[] gos = GameObject.FindGameObjectsWithTag ("Player");
 
-			for (int i = 0; i < gos.Length; i++) {
-				
-				units.Remove (gos [i].transform);
-				gos [i].transform.GetChild (0).gameObject.SetActive (false);
-				gos [i].GetComponent<ObjectMoveScript> ().isSelected = false;
+			if (gos.Length > 0) {
+				for (int i = 0; i < gos.Length; i++) {
+
+					units.Remove (gos [i].transform);
+					gos [i].transform.GetChild (0).gameObject.SetActive (false);
+				}
 			}
 
 			for (int i = 0; i < gos.Length; i++) {
 				if (rect.Contains (Camera.main.WorldToScreenPoint (gos [i].transform.position), true)) {
 					
-					units.Add (gos [i].transform);
 					Debug.Log (string.Format ("{0} REPORTING", gos [i].name));
+
+					units.Add (gos [i].transform);
+
 					gos [i].transform.GetChild (0).gameObject.SetActive (true);
-					gos [i].GetComponent<ObjectMoveScript> ().isSelected = true;
 				}
 			}
 
@@ -71,8 +75,10 @@ public class RTSControllerScript : MonoBehaviour
 				if (hit.transform.tag == "Player") {
 
 					Debug.Log (string.Format ("{0} REPORTING", hit.transform.name));
+
+					units.Add (hit.transform);
+
 					hit.transform.GetChild (0).gameObject.SetActive (true);
-					hit.transform.GetComponent<ObjectMoveScript> ().isSelected = true;
 				}
 			}
 
@@ -94,14 +100,48 @@ public class RTSControllerScript : MonoBehaviour
 
 					pointer.position = new Vector3 (hit.point.x, hit.point.y + 0.1f, hit.point.z);
 					pointer.rotation = Quaternion.FromToRotation (pointer.forward, hit.normal) * pointer.rotation;
+
+					int columns = CalculateColumns (units.Count);
+
+					for (int i = 0; i < units.Count; i++) {
+
+						Vector3 movePos1 = new Vector3 (pointer.position.x + (i * 2f), pointer.position.y, pointer.position.z);
+
+						units [i].GetComponent<ObjectMoveScript> ().navMeshAgent.SetDestination (movePos1);
+
+//						if (i >= units.Count / columns) {
+//							
+//							movePos1 = new Vector3 (movePos1.x, movePos1.y, movePos1.z - (i * 2f));
+//
+//							units [i].GetComponent<ObjectMoveScript> ().navMeshAgent.SetDestination (movePos1);
+//						}
+
+//						for (int j = units.Count / columns; j < units.Count; j++) {
+//
+//							Vector3 movePos2 = new Vector3 (pointer.position.x, pointer.position.y, pointer.position.z - j);
+//
+//							units [j].GetComponent<ObjectMoveScript> ().navMeshAgent.SetDestination (movePos2);
+//						}
+					}
+				} else {
+
+					return;
 				}
 			}
 		}
 	}
 
+	int CalculateColumns (int index)
+	{
+		int amount = index;
+		int column;
+
+		return column = (int)Mathf.Sqrt (amount);
+	}
 
 	void OnGUI ()
 	{
 		GUI.DrawTexture (new Rect (rect.x, Screen.height - rect.y, rect.width, -rect.height), texture);
+
 	}
 }

@@ -6,36 +6,44 @@ using UnityEngine.AI;
 public class ObjectMoveScript : MonoBehaviour
 {
 
-	NavMeshAgent navMeshAgent;
+	public NavMeshAgent navMeshAgent;
 
 	public Transform currentTarget;
 	Transform lastKnownTarget;
-
-	public bool isSelected = false;
 
 	RTSControllerScript unitController;
 
 	void Start ()
 	{
-		navMeshAgent = this.GetComponent<NavMeshAgent> ();
+		navMeshAgent = GetComponent<NavMeshAgent> ();
 
 		unitController = FindObjectOfType<RTSControllerScript> ();
 
-		StartCoroutine (RepathRoutine ());
+		//StartCoroutine (RepathRoutine ());
+
+		lastKnownTarget = currentTarget;
 	}
 
 	void Update ()
 	{
-		
+		//CheckSelection ();
 	}
 
 	IEnumerator RepathRoutine ()
 	{
-		if (isSelected) {
-			while (true) {
-				yield return new WaitForSeconds (0.5f);
-				navMeshAgent.SetDestination (currentTarget.position);
-			}
+		while (true) {
+				
+			yield return new WaitForSeconds (0.5f);
+			navMeshAgent.SetDestination (currentTarget.position);
+		}
+	}
+
+	void CheckSelection ()
+	{
+		for (int i = 0; i < unitController.units.Count; i++) {
+
+			navMeshAgent.SetDestination (currentTarget.position);
+
 		}
 	}
 }

@@ -23,6 +23,7 @@ public class DragMoveController : MonoBehaviour
 		} else {
 			TouchDrag ();
 		}
+
 	}
 
 	void MouseDrag ()
