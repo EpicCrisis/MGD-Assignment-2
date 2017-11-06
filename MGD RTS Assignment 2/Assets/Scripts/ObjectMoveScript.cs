@@ -9,7 +9,7 @@ public class ObjectMoveScript : MonoBehaviour
 	public NavMeshAgent navMeshAgent;
 
 	public Transform currentTarget;
-	Transform lastKnownTarget;
+	//Transform lastKnownTarget;
 
 	RTSControllerScript unitController;
 
@@ -21,7 +21,7 @@ public class ObjectMoveScript : MonoBehaviour
 
 		//StartCoroutine (RepathRoutine ());
 
-		lastKnownTarget = currentTarget;
+		//lastKnownTarget = currentTarget;
 	}
 
 	void Update ()

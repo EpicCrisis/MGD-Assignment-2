@@ -11,11 +11,16 @@ public class SwitchControlsScript : MonoBehaviour
 
 	public MoveMarkerScript markerObject;
 
+	public float heightOffset = 5f;
+
 	Image image;
+	Camera cam;
 
 	void Start ()
 	{
 		image = GetComponent<Image> ();
+
+		cam = FindObjectOfType<Camera> ();
 
 		selectControl.enabled = false;
 	}
@@ -29,7 +34,7 @@ public class SwitchControlsScript : MonoBehaviour
 	{
 		if (selectControl.enabled) {
 			
-			Debug.Log ("Camera Drag Enabled");
+			//Debug.Log ("Camera Drag Enabled");
 
 			image.color = Color.yellow;
 
@@ -50,7 +55,7 @@ public class SwitchControlsScript : MonoBehaviour
 
 		} else if (cameraControl.enabled) {
 			
-			Debug.Log ("Box Selection Enabled");
+			//Debug.Log ("Box Selection Enabled");
 
 			image.color = Color.cyan;
 
@@ -59,5 +64,15 @@ public class SwitchControlsScript : MonoBehaviour
 
 			markerObject.gameObject.SetActive (true);
 		}
+	}
+
+	public void IncreaseCameraHeight ()
+	{
+		cam.transform.position = new Vector3 (cam.transform.position.x, cam.transform.position.y + Mathf.Abs (heightOffset), cam.transform.position.z);
+	}
+
+	public void DecreaseCameraHeight ()
+	{
+		cam.transform.position = new Vector3 (cam.transform.position.x, cam.transform.position.y - Mathf.Abs (heightOffset), cam.transform.position.z);
 	}
 }

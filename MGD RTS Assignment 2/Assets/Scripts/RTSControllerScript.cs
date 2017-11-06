@@ -101,20 +101,18 @@ public class RTSControllerScript : MonoBehaviour
 					pointer.position = new Vector3 (hit.point.x, hit.point.y + 0.1f, hit.point.z);
 					pointer.rotation = Quaternion.FromToRotation (pointer.forward, hit.normal) * pointer.rotation;
 
-					int columns = CalculateColumns (units.Count);
+					//int columns = CalculateColumns (units.Count);
+
+					int horizontalSpacing = 0;
+					//int verticalSpacing = 0;
+
+					Vector3 movePos1;
 
 					for (int i = 0; i < units.Count; i++) {
 
-						Vector3 movePos1 = new Vector3 (pointer.position.x + (i * 2f), pointer.position.y, pointer.position.z);
+						movePos1 = new Vector3 (pointer.position.x + horizontalSpacing, pointer.position.y, pointer.position.z);
 
-						units [i].GetComponent<ObjectMoveScript> ().navMeshAgent.SetDestination (movePos1);
-
-//						if (i >= units.Count / columns) {
-//							
-//							movePos1 = new Vector3 (movePos1.x, movePos1.y, movePos1.z - (i * 2f));
-//
-//							units [i].GetComponent<ObjectMoveScript> ().navMeshAgent.SetDestination (movePos1);
-//						}
+						horizontalSpacing += 2;
 
 //						for (int j = units.Count / columns; j < units.Count; j++) {
 //
@@ -122,6 +120,8 @@ public class RTSControllerScript : MonoBehaviour
 //
 //							units [j].GetComponent<ObjectMoveScript> ().navMeshAgent.SetDestination (movePos2);
 //						}
+
+						units [i].GetComponent<ObjectMoveScript> ().navMeshAgent.SetDestination (movePos1);
 					}
 				} else {
 
@@ -134,9 +134,9 @@ public class RTSControllerScript : MonoBehaviour
 	int CalculateColumns (int index)
 	{
 		int amount = index;
-		int column;
+		//int column;
 
-		return column = (int)Mathf.Sqrt (amount);
+		return (int)Mathf.Sqrt (amount);
 	}
 
 	void OnGUI ()
