@@ -27,92 +27,93 @@ public class RTSControllerScript : MonoBehaviour
 
 	void Update ()
 	{
-		//on input down
-		if (Input.GetMouseButtonDown (0)) {
-			rect = new Rect ();
-			startPos = Input.mousePosition;
-			endPos = Vector3.zero;
-			units = new List<Transform> ();
-		}
+		if (!GameSettings.instance.isPaused) {
+			//on input down
+			if (Input.GetMouseButtonDown (0)) {
+				rect = new Rect ();
+				startPos = Input.mousePosition;
+				endPos = Vector3.zero;
+				units = new List<Transform> ();
+			}
 
-		//on input drag
-		if (Input.GetMouseButton (0)) {
-			endPos = Input.mousePosition;
-			Vector3 size = endPos - startPos;
-			rect = new Rect (startPos.x, startPos.y, size.x, size.y);
-		}
+			//on input drag
+			if (Input.GetMouseButton (0)) {
+				endPos = Input.mousePosition;
+				Vector3 size = endPos - startPos;
+				rect = new Rect (startPos.x, startPos.y, size.x, size.y);
+			}
 
-		//on input up
-		if (Input.GetMouseButtonUp (0)) {
+			//on input up
+			if (Input.GetMouseButtonUp (0)) {
 
-			//Debug.Log (rect);
-			//Debug.Log (gos.Length);
+				//Debug.Log (rect);
+				//Debug.Log (gos.Length);
 
-			GameObject[] gos = GameObject.FindGameObjectsWithTag ("Player");
+				GameObject[] gos = GameObject.FindGameObjectsWithTag ("Player");
 
-			if (gos.Length > 0) {
+				if (gos.Length > 0) {
+					for (int i = 0; i < gos.Length; i++) {
+
+						units.Remove (gos [i].transform);
+						gos [i].transform.GetChild (0).gameObject.SetActive (false);
+					}
+				}
+
 				for (int i = 0; i < gos.Length; i++) {
-
-					units.Remove (gos [i].transform);
-					gos [i].transform.GetChild (0).gameObject.SetActive (false);
-				}
-			}
-
-			for (int i = 0; i < gos.Length; i++) {
-				if (rect.Contains (Camera.main.WorldToScreenPoint (gos [i].transform.position), true)) {
+					if (rect.Contains (Camera.main.WorldToScreenPoint (gos [i].transform.position), true)) {
 					
-					Debug.Log (string.Format ("{0} REPORTING", gos [i].name));
+						Debug.Log (string.Format ("{0} REPORTING", gos [i].name));
 
-					units.Add (gos [i].transform);
+						units.Add (gos [i].transform);
 
-					gos [i].transform.GetChild (0).gameObject.SetActive (true);
+						gos [i].transform.GetChild (0).gameObject.SetActive (true);
+					}
 				}
-			}
 
-			ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+				ray = Camera.main.ScreenPointToRay (Input.mousePosition);
 
-			if (Physics.Raycast (ray, out hit)) {
-				if (hit.transform.tag == "Player") {
+				if (Physics.Raycast (ray, out hit)) {
+					if (hit.transform.tag == "Player") {
 
-					Debug.Log (string.Format ("{0} REPORTING", hit.transform.name));
+						Debug.Log (string.Format ("{0} REPORTING", hit.transform.name));
 
-					units.Add (hit.transform);
+						units.Add (hit.transform);
 
-					hit.transform.GetChild (0).gameObject.SetActive (true);
+						hit.transform.GetChild (0).gameObject.SetActive (true);
+					}
 				}
-			}
 
-			rect = new Rect ();
-		}
+				rect = new Rect ();
+			}
 			
-		if (Input.GetMouseButton (1) || Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Began) {
+			if (Input.GetMouseButton (1) || Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Began) {
 
-			Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
-			RaycastHit hit;
+				Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+				RaycastHit hit;
 
-			// To test rotation on ramps! //
+				// To test rotation on ramps! //
 
-			if (Physics.Raycast (ray, out hit)) {
-				if (hit.transform.tag == "Ground") {
+				if (Physics.Raycast (ray, out hit)) {
+					if (hit.transform.tag == "Ground") {
 
-					//Debug.Log ("Create Marker");
-					//Debug.DrawLine (ray.origin, hit.point);
+						//Debug.Log ("Create Marker");
+						//Debug.DrawLine (ray.origin, hit.point);
 
-					pointer.position = new Vector3 (hit.point.x, hit.point.y + 0.1f, hit.point.z);
-					pointer.rotation = Quaternion.FromToRotation (pointer.forward, hit.normal) * pointer.rotation;
+						pointer.position = new Vector3 (hit.point.x, hit.point.y + 0.1f, hit.point.z);
+						pointer.rotation = Quaternion.FromToRotation (pointer.forward, hit.normal) * pointer.rotation;
 
-					//int columns = CalculateColumns (units.Count);
+						//int columns = CalculateColumns (units.Count);
 
-					int horizontalSpacing = 0;
-					//int verticalSpacing = 0;
+						int horizontalSpacing = 0;
+						//int verticalSpacing = 0;
 
-					Vector3 movePos1;
+						Vector3 movePos1;
 
-					for (int i = 0; i < units.Count; i++) {
+						for (int i = 0; i < units.Count; i++) {
 
-						movePos1 = new Vector3 (pointer.position.x + horizontalSpacing, pointer.position.y, pointer.position.z);
+							movePos1 = new Vector3 (pointer.position.x + horizontalSpacing, pointer.position.y, pointer.position.z);
 
-						horizontalSpacing += 2;
+							horizontalSpacing += 2;
 
 //						for (int j = units.Count / columns; j < units.Count; j++) {
 //
@@ -121,11 +122,12 @@ public class RTSControllerScript : MonoBehaviour
 //							units [j].GetComponent<ObjectMoveScript> ().navMeshAgent.SetDestination (movePos2);
 //						}
 
-						units [i].GetComponent<ObjectMoveScript> ().navMeshAgent.SetDestination (movePos1);
-					}
-				} else {
+							units [i].GetComponent<ObjectMoveScript> ().navMeshAgent.SetDestination (movePos1);
+						}
+					} else {
 
-					return;
+						return;
+					}
 				}
 			}
 		}
@@ -142,6 +144,5 @@ public class RTSControllerScript : MonoBehaviour
 	void OnGUI ()
 	{
 		GUI.DrawTexture (new Rect (rect.x, Screen.height - rect.y, rect.width, -rect.height), texture);
-
 	}
 }

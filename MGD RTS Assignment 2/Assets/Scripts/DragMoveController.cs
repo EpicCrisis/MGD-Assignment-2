@@ -18,12 +18,13 @@ public class DragMoveController : MonoBehaviour
 
 	void Update ()
 	{
-		if (useMouse) {
-			MouseDrag ();
-		} else {
-			TouchDrag ();
+		if (!GameSettings.instance.isPaused) {
+			if (useMouse) {
+				MouseDrag ();
+			} else {
+				TouchDrag ();
+			}
 		}
-
 	}
 
 	void MouseDrag ()

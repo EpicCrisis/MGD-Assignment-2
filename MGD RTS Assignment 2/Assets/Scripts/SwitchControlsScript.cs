@@ -32,47 +32,53 @@ public class SwitchControlsScript : MonoBehaviour
 
 	public void ChangeControl ()
 	{
-		if (selectControl.enabled) {
+		if (!GameSettings.instance.isPaused) {
+			if (selectControl.enabled) {
 			
-			//Debug.Log ("Camera Drag Enabled");
+				//Debug.Log ("Camera Drag Enabled");
 
-			image.color = Color.yellow;
+				image.color = Color.yellow;
 
-			cameraControl.enabled = true;
-			selectControl.enabled = false;
+				cameraControl.enabled = true;
+				selectControl.enabled = false;
 
-			markerObject.gameObject.SetActive (false);
+				markerObject.gameObject.SetActive (false);
 
-			GameObject[] gos = GameObject.FindGameObjectsWithTag ("Player");
+				GameObject[] gos = GameObject.FindGameObjectsWithTag ("Player");
 
-			if (gos.Length > 0) {
-				for (int i = 0; i < gos.Length; i++) {
+				if (gos.Length > 0) {
+					for (int i = 0; i < gos.Length; i++) {
 
-					selectControl.units.Remove (gos [i].transform);
-					gos [i].transform.GetChild (0).gameObject.SetActive (false);
+						selectControl.units.Remove (gos [i].transform);
+						gos [i].transform.GetChild (0).gameObject.SetActive (false);
+					}
 				}
-			}
 
-		} else if (cameraControl.enabled) {
+			} else if (cameraControl.enabled) {
 			
-			//Debug.Log ("Box Selection Enabled");
+				//Debug.Log ("Box Selection Enabled");
 
-			image.color = Color.cyan;
+				image.color = Color.cyan;
 
-			cameraControl.enabled = false;
-			selectControl.enabled = true;
+				cameraControl.enabled = false;
+				selectControl.enabled = true;
 
-			markerObject.gameObject.SetActive (true);
+				markerObject.gameObject.SetActive (true);
+			}
 		}
 	}
 
 	public void IncreaseCameraHeight ()
 	{
-		cam.transform.position = new Vector3 (cam.transform.position.x, cam.transform.position.y + Mathf.Abs (heightOffset), cam.transform.position.z);
+		if (!GameSettings.instance.isPaused) {
+			cam.transform.position = new Vector3 (cam.transform.position.x, cam.transform.position.y + Mathf.Abs (heightOffset), cam.transform.position.z);
+		}
 	}
 
 	public void DecreaseCameraHeight ()
 	{
-		cam.transform.position = new Vector3 (cam.transform.position.x, cam.transform.position.y - Mathf.Abs (heightOffset), cam.transform.position.z);
+		if (!GameSettings.instance.isPaused) {
+			cam.transform.position = new Vector3 (cam.transform.position.x, cam.transform.position.y - Mathf.Abs (heightOffset), cam.transform.position.z);
+		}
 	}
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class ObstacleTriggerScript : MonoBehaviour
 {
@@ -12,41 +13,100 @@ public class ObstacleTriggerScript : MonoBehaviour
 
 	StepSwitchScript stepScript;
 
+	public List<GameObject> obstacleToCreate = new List<GameObject> ();
+
 	public bool isSpecialDoor = false;
 
-	public List<GameObject> obstacleToCreate = new List<GameObject> ();
+	public bool isWinTrigger = false;
+
+	// Objects to bring in the win screen. //
+
+	public GameObject restartPanel;
+
+	public GameObject buttonPanel;
+
+	public Text restartText;
 
 	void Start ()
 	{
-		StartCoroutine (CheckDoor ());
+		//StartCoroutine (CheckDoor ());
 	}
 
 	void Update ()
 	{
-		
+		CheckSwitchToStep ();
 	}
 
 	void CheckSwitchToStep ()
 	{
-		if (switchToStep.Count == switchToTriggerObstacle.Count && switchToTriggerObstacle.Count != 0) {
-
-			gameObject.SetActive (false);
-
-			if (isSpecialDoor) {
-
-				for (int i = 0; i < obstacleToCreate.Count; i++) {
+		/*
+		if (switchToTriggerObstacle.Count == switchToStep.Count && switchToTriggerObstacle.Count != 0) {
+			
+			for (int i = 0; i < switchToStep.Count; i++) {
+				
+				if (switchToStep [i] != switchToTriggerObstacle [i]) {
 					
-					obstacleToCreate [i].SetActive (true);
+					return;
 
+				} else {
+
+					gameObject.SetActive (false);
+
+					if (isSpecialDoor) {
+
+						for (int j = 0; j < obstacleToCreate.Count; j++) {
+
+							obstacleToCreate [j].SetActive (true);
+
+						}
+					}
+
+					if (isWinTrigger) {
+
+						restartText.text = "YOU WIN";
+
+						restartPanel.SetActive (true);
+
+						gameSettings.isPaused = true;
+					}
 				}
-			} else {
-
-				return;
 			}
+		}
+		*/
 
-		} else {
+		if (switchToTriggerObstacle.Count == switchToStep.Count) {
 
-			return;
+			for (int i = 0; i < switchToStep.Count; i++) {
+			
+				if (switchToTriggerObstacle.Contains (switchToStep [i]) && switchToTriggerObstacle.Count != 0) {
+			
+					gameObject.SetActive (false);
+
+					if (isSpecialDoor) {
+
+						for (int j = 0; j < obstacleToCreate.Count; j++) {
+					
+							obstacleToCreate [j].SetActive (true);
+
+						}
+					}
+
+					if (isWinTrigger) {
+
+						restartText.text = "YOU WIN";
+
+						restartPanel.SetActive (true);
+
+						buttonPanel.SetActive (false);
+
+						GameSettings.instance.PauseGame (true);
+					}
+
+				} else {
+
+					return;
+				}
+			}
 		}
 	}
 
