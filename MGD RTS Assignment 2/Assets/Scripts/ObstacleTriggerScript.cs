@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class ObstacleTriggerScript : MonoBehaviour
 {
@@ -10,6 +11,10 @@ public class ObstacleTriggerScript : MonoBehaviour
 	public List<GameObject> switchToStep = new List<GameObject> ();
 
 	StepSwitchScript stepScript;
+
+	public bool isSpecialDoor = false;
+
+	public List<GameObject> obstacleToCreate = new List<GameObject> ();
 
 	void Start ()
 	{
@@ -23,9 +28,21 @@ public class ObstacleTriggerScript : MonoBehaviour
 
 	void CheckSwitchToStep ()
 	{
-		if (switchToStep.Count == switchToTriggerObstacle.Count) {
+		if (switchToStep.Count == switchToTriggerObstacle.Count && switchToTriggerObstacle.Count != 0) {
 
 			gameObject.SetActive (false);
+
+			if (isSpecialDoor) {
+
+				for (int i = 0; i < obstacleToCreate.Count; i++) {
+					
+					obstacleToCreate [i].SetActive (true);
+
+				}
+			} else {
+
+				return;
+			}
 
 		} else {
 
