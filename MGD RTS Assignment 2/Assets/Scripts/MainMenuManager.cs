@@ -35,6 +35,8 @@ public class MainMenuManager : MonoBehaviour
 		SceneManager.LoadScene (loadedLevel.buildIndex);
 
 		GameSettings.instance.PauseGame (false);
+
+		AudioManager.instance.Play ("BGM");
 	}
 
 	//Finds the menu enum in the public list, then proceed to set active.//

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - MoveMarker
   - Ground
+  - Trap
   layers:
   - Default
   - TransparentFX

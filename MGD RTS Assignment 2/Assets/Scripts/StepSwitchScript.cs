@@ -25,6 +25,8 @@ public class StepSwitchScript : MonoBehaviour
 
 			Debug.Log ("CORRECT COLOUR STEPS ON IT");
 
+			AudioManager.instance.Play ("StepOn");
+
 			obstacleScript.switchToStep.Add (this.gameObject);
 
 		} else {
@@ -36,6 +38,8 @@ public class StepSwitchScript : MonoBehaviour
 	void OnTriggerExit (Collider other)
 	{
 		if (other.gameObject.layer == objectLayer) {
+			
+			AudioManager.instance.Play ("StepOff");
 
 			obstacleScript.switchToStep.Remove (this.gameObject);
 

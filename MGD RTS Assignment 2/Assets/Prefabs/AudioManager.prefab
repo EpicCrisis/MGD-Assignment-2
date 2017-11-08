@@ -53,8 +53,50 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sounds:
   - name: BGM
-    clip: {fileID: 8300000, guid: a7b82335d871ee7479f9fe5d932a1119, type: 3}
+    clip: {fileID: 8300000, guid: b05af35da17333a44bc21d040a4ecfb6, type: 3}
     volume: 0.3
-    pitch: 1
+    pitch: 0.9
     loop: 1
+    source: {fileID: 0}
+  - name: Death
+    clip: {fileID: 8300000, guid: 524c15200755f454889f2c65b0b5261e, type: 3}
+    volume: 0.8
+    pitch: 0.9
+    loop: 0
+    source: {fileID: 0}
+  - name: Win
+    clip: {fileID: 8300000, guid: 66aeec4cd75994443aa4256af515219c, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: StepOn
+    clip: {fileID: 8300000, guid: 6b11c6183d114b646a9188d30da815a2, type: 3}
+    volume: 0.6
+    pitch: 1.1
+    loop: 0
+    source: {fileID: 0}
+  - name: StepOff
+    clip: {fileID: 8300000, guid: f10a651730193d24fae872436bc0f90c, type: 3}
+    volume: 0.6
+    pitch: 0.8
+    loop: 0
+    source: {fileID: 0}
+  - name: Door
+    clip: {fileID: 8300000, guid: 92e2ccba7662a0040a3a3e588f536e65, type: 3}
+    volume: 0.8
+    pitch: 0.6
+    loop: 0
+    source: {fileID: 0}
+  - name: Select
+    clip: {fileID: 8300000, guid: e83513ca568416347861c6244f0ae7d1, type: 3}
+    volume: 0.8
+    pitch: 0.8
+    loop: 0
+    source: {fileID: 0}
+  - name: Move
+    clip: {fileID: 8300000, guid: 045e4576047dfb8408d18d407bcb5547, type: 3}
+    volume: 1
+    pitch: 0.6
+    loop: 0
     source: {fileID: 0}

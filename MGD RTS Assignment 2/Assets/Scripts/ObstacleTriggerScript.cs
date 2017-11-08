@@ -80,6 +80,8 @@ public class ObstacleTriggerScript : MonoBehaviour
 			
 				if (switchToTriggerObstacle.Contains (switchToStep [i]) && switchToTriggerObstacle.Count != 0) {
 			
+					AudioManager.instance.Play ("Door");
+
 					gameObject.SetActive (false);
 
 					if (isSpecialDoor) {
@@ -92,6 +94,10 @@ public class ObstacleTriggerScript : MonoBehaviour
 					}
 
 					if (isWinTrigger) {
+
+						AudioManager.instance.Play ("Win");
+
+						AudioManager.instance.Stop ("BGM");
 
 						restartText.text = "YOU WIN";
 

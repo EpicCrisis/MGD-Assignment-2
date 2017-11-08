@@ -18,6 +18,11 @@ public class RTSControllerScript : MonoBehaviour
 
 	public Transform pointer;
 
+	public float soundDelay = 3f;
+	public float soundDelayCounter = 0f;
+
+	public bool canSound = true;
+
 	//public List<ObjectMoveScript> objectScript = new List<ObjectMoveScript> ();
 
 	void Start ()
@@ -64,6 +69,11 @@ public class RTSControllerScript : MonoBehaviour
 					
 						Debug.Log (string.Format ("{0} REPORTING", gos [i].name));
 
+						if (canSound) {
+							AudioManager.instance.Play ("Select");
+							canSound = false;
+						}
+
 						units.Add (gos [i].transform);
 
 						gos [i].transform.GetChild (0).gameObject.SetActive (true);
@@ -76,6 +86,11 @@ public class RTSControllerScript : MonoBehaviour
 					if (hit.transform.tag == "Player") {
 
 						Debug.Log (string.Format ("{0} REPORTING", hit.transform.name));
+
+						if (canSound) {
+							AudioManager.instance.Play ("Select");
+							canSound = false;
+						}
 
 						units.Add (hit.transform);
 
@@ -111,18 +126,26 @@ public class RTSControllerScript : MonoBehaviour
 
 						for (int i = 0; i < units.Count; i++) {
 
-							movePos1 = new Vector3 (pointer.position.x + horizontalSpacing, pointer.position.y, pointer.position.z);
+							if (i >= 0) {
+								
+								movePos1 = new Vector3 (pointer.position.x + horizontalSpacing, pointer.position.y, pointer.position.z);
 
-							horizontalSpacing += 2;
+								horizontalSpacing += 2;
 
-//						for (int j = units.Count / columns; j < units.Count; j++) {
-//
-//							Vector3 movePos2 = new Vector3 (pointer.position.x, pointer.position.y, pointer.position.z - j);
-//
-//							units [j].GetComponent<ObjectMoveScript> ().navMeshAgent.SetDestination (movePos2);
-//						}
+								//						for (int j = units.Count / columns; j < units.Count; j++) {
+								//
+								//							Vector3 movePos2 = new Vector3 (pointer.position.x, pointer.position.y, pointer.position.z - j);
+								//
+								//							units [j].GetComponent<ObjectMoveScript> ().navMeshAgent.SetDestination (movePos2);
+								//						}
 
-							units [i].GetComponent<ObjectMoveScript> ().navMeshAgent.SetDestination (movePos1);
+								units [i].GetComponent<ObjectMoveScript> ().navMeshAgent.SetDestination (movePos1);
+
+								if (canSound) {
+									AudioManager.instance.Play ("Move");
+									canSound = false;
+								}
+							}
 						}
 					} else {
 
@@ -131,6 +154,8 @@ public class RTSControllerScript : MonoBehaviour
 				}
 			}
 		}
+
+		UpdateSound ();
 	}
 
 	int CalculateColumns (int index)
@@ -144,5 +169,20 @@ public class RTSControllerScript : MonoBehaviour
 	void OnGUI ()
 	{
 		GUI.DrawTexture (new Rect (rect.x, Screen.height - rect.y, rect.width, -rect.height), texture);
+	}
+
+	void UpdateSound ()
+	{
+		if (!canSound) {
+			
+			soundDelayCounter += Time.deltaTime;
+
+			if (soundDelayCounter >= soundDelay) {
+				
+				canSound = true;
+
+				soundDelayCounter = 0f;
+			}
+		}
 	}
 }
