@@ -13,6 +13,8 @@ public class SwitchControlsScript : MonoBehaviour
 
 	public float heightOffset = 5f;
 
+	public List<GameObject> playerPortraits = new List<GameObject> ();
+
 	Image image;
 	Camera cam;
 
@@ -33,6 +35,7 @@ public class SwitchControlsScript : MonoBehaviour
 	public void ChangeControl ()
 	{
 		if (!GameSettings.instance.isPaused) {
+
 			if (selectControl.enabled) {
 			
 				//Debug.Log ("Camera Drag Enabled");
@@ -54,6 +57,13 @@ public class SwitchControlsScript : MonoBehaviour
 					}
 				}
 
+				if (playerPortraits.Count > 0) {
+					for (int i = 0; i < playerPortraits.Count; i++) {
+
+						playerPortraits [i].SetActive (false);
+					}
+				}
+
 			} else if (cameraControl.enabled) {
 			
 				//Debug.Log ("Box Selection Enabled");
@@ -64,6 +74,13 @@ public class SwitchControlsScript : MonoBehaviour
 				selectControl.enabled = true;
 
 				markerObject.gameObject.SetActive (true);
+
+				if (playerPortraits.Count > 0) {
+					for (int i = 0; i < playerPortraits.Count; i++) {
+
+						playerPortraits [i].SetActive (true);
+					}
+				}
 			}
 		}
 	}

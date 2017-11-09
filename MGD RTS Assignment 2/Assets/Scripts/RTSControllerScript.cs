@@ -35,14 +35,25 @@ public class RTSControllerScript : MonoBehaviour
 		if (!GameSettings.instance.isPaused) {
 			//on input down
 			if (Input.GetMouseButtonDown (0)) {
+
+				GameObject[] gos = GameObject.FindGameObjectsWithTag ("Player");
+				
 				rect = new Rect ();
 				startPos = Input.mousePosition;
 				endPos = Vector3.zero;
-				units = new List<Transform> ();
+
+				units = new List<Transform> (); //resets the list
+
+				if (gos.Length > 0) {
+					for (int i = 0; i < gos.Length; i++) {
+						gos [i].transform.GetChild (0).gameObject.SetActive (false);
+					}
+				}
 			}
 
 			//on input drag
 			if (Input.GetMouseButton (0)) {
+				
 				endPos = Input.mousePosition;
 				Vector3 size = endPos - startPos;
 				rect = new Rect (startPos.x, startPos.y, size.x, size.y);
@@ -51,18 +62,18 @@ public class RTSControllerScript : MonoBehaviour
 			//on input up
 			if (Input.GetMouseButtonUp (0)) {
 
+				GameObject[] gos = GameObject.FindGameObjectsWithTag ("Player");
+
 				//Debug.Log (rect);
 				//Debug.Log (gos.Length);
 
-				GameObject[] gos = GameObject.FindGameObjectsWithTag ("Player");
-
-				if (gos.Length > 0) {
-					for (int i = 0; i < gos.Length; i++) {
-
-						units.Remove (gos [i].transform);
-						gos [i].transform.GetChild (0).gameObject.SetActive (false);
-					}
-				}
+//				if (gos.Length > 0) {
+//					for (int i = 0; i < gos.Length; i++) {
+//
+//						units.Remove (gos [i].transform);
+//						gos [i].transform.GetChild (0).gameObject.SetActive (false);
+//					}
+//				}
 
 				for (int i = 0; i < gos.Length; i++) {
 					if (rect.Contains (Camera.main.WorldToScreenPoint (gos [i].transform.position), true)) {

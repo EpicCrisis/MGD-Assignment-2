@@ -25,6 +25,8 @@ public class ObstacleTriggerScript : MonoBehaviour
 
 	public GameObject buttonPanel;
 
+	public GameObject portraitPanel;
+
 	public Text restartText;
 
 	void Start ()
@@ -104,6 +106,8 @@ public class ObstacleTriggerScript : MonoBehaviour
 						restartPanel.SetActive (true);
 
 						buttonPanel.SetActive (false);
+
+						portraitPanel.SetActive (false);
 
 						GameSettings.instance.PauseGame (true);
 					}
