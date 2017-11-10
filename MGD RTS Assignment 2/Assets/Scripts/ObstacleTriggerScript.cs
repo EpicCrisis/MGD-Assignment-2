@@ -15,6 +15,8 @@ public class ObstacleTriggerScript : MonoBehaviour
 
 	public List<GameObject> obstacleToCreate = new List<GameObject> ();
 
+	public List<GameObject> obstacleToDisable = new List<GameObject> ();
+
 	public bool isSpecialDoor = false;
 
 	public bool isWinTrigger = false;
@@ -84,7 +86,10 @@ public class ObstacleTriggerScript : MonoBehaviour
 			
 					AudioManager.instance.Play ("Door");
 
-					gameObject.SetActive (false);
+					for (int k = 0; k < obstacleToDisable.Count; k++) {
+						
+						obstacleToDisable [k].SetActive (false);
+					}
 
 					if (isSpecialDoor) {
 
