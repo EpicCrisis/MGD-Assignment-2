@@ -23,11 +23,13 @@ public class RTSControllerScript : MonoBehaviour
 
 	public bool canSound = true;
 
+	PortraitControllerScript portraitScript;
+
 	//public List<ObjectMoveScript> objectScript = new List<ObjectMoveScript> ();
 
 	void Start ()
 	{
-		
+		portraitScript = FindObjectOfType<PortraitControllerScript> ();
 	}
 
 	void Update ()
@@ -42,13 +44,7 @@ public class RTSControllerScript : MonoBehaviour
 				startPos = Input.mousePosition;
 				endPos = Vector3.zero;
 
-				units = new List<Transform> (); //resets the list
-
-				if (gos.Length > 0) {
-					for (int i = 0; i < gos.Length; i++) {
-						gos [i].transform.GetChild (0).gameObject.SetActive (false);
-					}
-				}
+				portraitScript.selectPortrait = false;
 			}
 
 			//on input drag
@@ -73,7 +69,17 @@ public class RTSControllerScript : MonoBehaviour
 //						units.Remove (gos [i].transform);
 //						gos [i].transform.GetChild (0).gameObject.SetActive (false);
 //					}
-//				}
+				//				}
+
+				if (!portraitScript.selectPortrait) {
+					units = new List<Transform> (); //resets the list
+
+					if (gos.Length > 0) {
+						for (int i = 0; i < gos.Length; i++) {
+							gos [i].transform.GetChild (0).gameObject.SetActive (false);
+						}
+					}
+				}
 
 				for (int i = 0; i < gos.Length; i++) {
 					if (rect.Contains (Camera.main.WorldToScreenPoint (gos [i].transform.position), true)) {
@@ -118,7 +124,6 @@ public class RTSControllerScript : MonoBehaviour
 				RaycastHit hit;
 
 				// To test rotation on ramps! //
-
 				if (Physics.Raycast (ray, out hit)) {
 					if (hit.transform.tag == "Ground") {
 

@@ -15,6 +15,8 @@ public class PortraitControllerScript : MonoBehaviour
 
 	RTSControllerScript rtsController;
 
+	public bool selectPortrait = false;
+
 	void Start ()
 	{
 		rtsController = FindObjectOfType<RTSControllerScript> ();
@@ -27,9 +29,21 @@ public class PortraitControllerScript : MonoBehaviour
 
 	public void ClickPortrait (GameObject player)
 	{
+		selectPortrait = true;
+
 		clickCounter++;
 
+		GameObject[] gos = GameObject.FindGameObjectsWithTag ("Player");
+
 		if (clickCounter >= 1) {
+
+			rtsController.units = new List<Transform> (); //resets the list
+
+			if (gos.Length > 0) {
+				for (int i = 0; i < gos.Length; i++) {
+					gos [i].transform.GetChild (0).gameObject.SetActive (false);
+				}
+			}
 			
 			rtsController.units.Add (player.transform);
 
